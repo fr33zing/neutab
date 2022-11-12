@@ -7,6 +7,10 @@ description = "CLI for neutab, create new tab pages from a config file"
 license = "GPL-3.0-or-later"
 repository = "https://github.com/fr33zing/neutab"
 
+[[bin]]
+name = "neutab"
+path = "src/main.rs"
+
 [dependencies]
 neutab = { path = "../neutab", version = "0.1.0" }
 clap = { version = "4.0.22", features = ["derive"] }
