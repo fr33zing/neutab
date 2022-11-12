@@ -8,7 +8,7 @@ license = "GPL-3.0-or-later"
 repository = "https://github.com/fr33zing/neutab"
 
 [dependencies]
-neutab = { path = "../neutab", version = "*" }
+neutab = { path = "../neutab", version = "0.1.0" }
 clap = { version = "4.0.22", features = ["derive"] }
 webbrowser = "0.8.1"
 tracing = "0.1.37"
