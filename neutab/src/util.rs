@@ -9,9 +9,9 @@ pub fn sha1_base32(bytes: &[u8]) -> Result<String, base16ct::Error> {
     Ok(hash_base32.to_lowercase()[..8].into())
 }
 
-pub fn favicon_class(url: &str) -> Result<String, base16ct::Error> {
+pub fn site_icon_class(url: &str) -> Result<String, base16ct::Error> {
     let url_hash = sha1_base32(url.as_bytes())?;
-    Ok(format!("favicon-{url_hash}"))
+    Ok(format!("ico-{url_hash}"))
 }
 
 /// Calculates the average brightness of visible pixels in an image.

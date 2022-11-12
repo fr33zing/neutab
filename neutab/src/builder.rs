@@ -68,7 +68,7 @@ pub async fn build(
     // Setup tera
     let mut tera = Tera::default();
     tera.register_filter("hash", tera_filters::Hash);
-    tera.register_filter("favicon", tera_filters::Favicon);
+    tera.register_filter("site_icon", tera_filters::SiteIcon);
     tera.register_function("len", tera_functions::Len);
     tera.register_function(
         "count_links_in_page",
@@ -79,9 +79,9 @@ pub async fn build(
     context.insert("config", &config);
     context.insert("mobile", &mobile);
 
-    // Build favicons css styles
-    let out_favicons = build_site_icons(&config, 24).await?;
-    context.insert("favicons", &out_favicons);
+    // Build site icon css styles
+    let out_site_icons = build_site_icons(&config, 24).await?;
+    context.insert("site_icons", &out_site_icons);
 
     // Build css
     let out_css = build_css(src_scss, &mut tera, &context)?;
@@ -193,8 +193,8 @@ async fn build_site_icons(config: &Config, size: u32) -> Result<String, BuildErr
         debug!("generating data url & css class");
 
         let data_base64 = base64ct::Base64::encode_string(bytes);
-        let class = util::favicon_class(url)
-            .unwrap_or_else(|_| panic!("failed to get favicon class for url: '{url}'"));
+        let class = util::site_icon_class(url)
+            .unwrap_or_else(|_| panic!("failed to get site icon class for url: '{url}'"));
 
         debug!("writing output");
 
