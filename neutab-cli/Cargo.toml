@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["fr33zing"]
 description = "CLI for neutab, create new tab pages from a config file"
 license = "GPL-3.0-or-later"
+repository = "https://github.com/fr33zing/neutab"
 
 [dependencies]
 neutab = { path = "../neutab" }
