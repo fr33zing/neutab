@@ -1,0 +1,11 @@
+# Build output
+**/target
+
+# Program output
+neutab.html
+
+# Output of `cargo xtask gen-config`
+generated.json
+
+# Personal reminders
+/*todo*

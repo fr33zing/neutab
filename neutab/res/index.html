@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{{ config.title }}</title>
+        <style>{{ favicons }}</style>
+        <style>{{ styles }}</style>
+    </head>
+
+    <body>
+        {% for page in config.pages %}
+            <input
+                type="radio"
+                name="tab"
+                id="page-{{ page.name | hash }}"
+                {% if loop.first %}
+                    checked="checked"
+                {% endif %}
+            />
+            <label for="page-{{ page.name | hash }}" >
+                <div class="tab">
+                    <div class="card">
+                        <div></div>
+                        <span>{{ page.name }}</span>
+                        <span>
+                            {{ page.sections | length }} sections,
+                            {{ count_links_in_page(page_name = page.name) }} links
+                        </span>
+                    </div>
+                </div>
+            </label>
+            <article>
+                {% for section in page.sections %}
+                    <section>
+                        <nav>
+                            <h1>{{ section.name }}</h1>
+                            {% for link in section.links %}
+                                <a href="{{ link.url }}">
+                                    <div class="{{ link.url | favicon }}"></div>
+                                    <span>{{ link.name }}</span>
+                                    <span>{{ link.url }}</span>
+                                </a>
+                            {% endfor %}
+                        </nav>
+                    </section>
+                {% endfor %}
+            </article>
+        {% endfor %}
+    </body>
+</html>
+

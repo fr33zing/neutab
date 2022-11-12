@@ -1,0 +1,293 @@
+{
+    "title": "New Tab (Example)",
+    "theme": {
+        "dark": true,
+        "accent": "green"
+    },
+    "pages": [
+        {
+            "name": "Example Page 1",
+            "sections": [
+                {
+                    "name": "Example Section 1",
+                    "links": [
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                },
+                {
+                    "name": "Example Section 2",
+                    "links": [
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Example Page 2",
+            "sections": [
+                {
+                    "name": "Example Section 3",
+                    "links": [
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                },
+                {
+                    "name": "Example Section 4",
+                    "links": [
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Example Page 3",
+            "sections": [
+                {
+                    "name": "Example Section 5",
+                    "links": [
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                },
+                {
+                    "name": "Example Section 6",
+                    "links": [
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Example Page 4",
+            "sections": [
+                {
+                    "name": "Example Section 7",
+                    "links": [
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Crates",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                },
+                {
+                    "name": "Example Section 8",
+                    "links": [
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        },
+                        {
+                            "name": "Something else",
+                            "url": "https://crates.io/"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
