@@ -1,7 +1,18 @@
+//! Provides the `len` Tera function.
+
 use std::collections::HashMap;
 
 use tera::{to_value, Error, Result, Value};
 
+/// Length filter for use in Tera templates. Returns the length of the provided array.
+///
+/// # Example
+///
+/// ```html
+/// <span>
+///     Config has {{ len(arr = config.pages) }} pages.
+/// </span>
+/// ```
 pub struct Len;
 
 impl tera::Function for Len {

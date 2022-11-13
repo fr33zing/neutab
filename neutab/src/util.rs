@@ -1,5 +1,8 @@
+//! Utility functions.
+
 use sha1::{Digest, Sha1};
 
+/// Returns a base32-encoded SHA1 hash of the provided bytes.
 pub fn sha1_base32(bytes: &[u8]) -> String {
     let mut hasher = Sha1::new();
     hasher.update(bytes);

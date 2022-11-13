@@ -1,6 +1,6 @@
 [package]
 name = "neutab-cli"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["fr33zing"]
 description = "CLI for neutab, create new tab pages from a config file"
@@ -12,7 +12,7 @@ name = "neutab"
 path = "src/main.rs"
 
 [dependencies]
-neutab = { path = "../neutab", version = "0.1.0" }
+neutab = { path = "../neutab", version = "0.3.0" }
 clap = { version = "4.0.22", features = ["derive"] }
 webbrowser = "0.8.1"
 tracing = "0.1.37"

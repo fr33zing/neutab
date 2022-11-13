@@ -1,9 +1,22 @@
+//! Provides the `count_links_in_page` Tera function.
+
 use std::collections::HashMap;
 
 use tera::{to_value, Error, Result, Value};
 
 use crate::config::Config;
 
+/// Link counting function for use in Tera templates. Returns the number of links in all sections of
+/// the provided page.
+///
+/// # Example
+///
+/// ```html
+/// <span>
+///     {% set n = count_links_in_page(page_name = page.name) %}
+///     This page has {{ n }} links.
+/// <span>
+/// ```
 pub struct CountLinksInPage(pub Config);
 
 impl tera::Function for CountLinksInPage {

@@ -1,7 +1,10 @@
+//! Defines command line arguments by providing the `[Args]` struct.
+
 use std::path::PathBuf;
 
 use clap::{ArgGroup, Parser, ValueEnum};
 
+/// Defines command line arguments.
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 #[command(group(
@@ -19,7 +22,7 @@ pub(crate) struct Args {
 
     /// Output file
     ///
-    /// Use -o- to write to stdout (disables logging)
+    /// Use -o- to output to stdout and log to stderr.
     #[arg(short, long, value_name = "FILE", default_value = "neutab.html")]
     pub output: PathBuf,
 
@@ -48,16 +51,27 @@ pub(crate) struct Args {
     pub silent: bool,
 }
 
+/// 1:1 with [`tracing::Level`] to aid in argument parsing, since tracing's levels are structs.
 #[derive(ValueEnum, Clone, Debug)]
-pub enum LogLevel {
+pub(crate) enum LogLevel {
+    /// Corresponds to `tracing::Level::TRACE`.
     Trace,
+
+    /// Corresponds to `tracing::Level::DEBUG`.
     Debug,
+
+    /// Corresponds to `tracing::Level::INFO`.
     Info,
+
+    /// Corresponds to `tracing::Level::WARN`.
     Warn,
+
+    /// Corresponds to `tracing::Level::ERROR`.
     Error,
 }
 
 impl LogLevel {
+    /// Converts the [`LogLevel`] to the corresponding [`tracing::Level`].
     pub fn as_tracing_level(&self) -> tracing::Level {
         match self {
             LogLevel::Trace => tracing::Level::TRACE,

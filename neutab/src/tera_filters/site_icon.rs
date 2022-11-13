@@ -1,9 +1,13 @@
+//! Provides the `site_icon` Tera filter.
+
 use std::collections::HashMap;
 
 use tera::{to_value, Filter};
 
 use crate::builder;
 
+/// Site icon CSS classname filter for use in Tera templates. Converts a string into a corresponding
+/// CSS classname to add a website's icon to the background of the element the class is applied to.
 pub struct SiteIcon;
 
 impl Filter for SiteIcon {

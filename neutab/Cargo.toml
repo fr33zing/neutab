@@ -1,6 +1,6 @@
 [package]
 name = "neutab"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["fr33zing"]
 description = "Library for neutab-cli, create new tab pages from a config file"

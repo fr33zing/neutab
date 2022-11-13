@@ -1,9 +1,12 @@
+//! Provides the `hash` Tera filter.
+
 use std::collections::HashMap;
 
 use tera::{to_value, Filter};
 
 use crate::util;
 
+/// Hash filter for use in Tera templates. Returns a base32-encoded SHA1 hash.
 pub struct Hash;
 
 impl Filter for Hash {

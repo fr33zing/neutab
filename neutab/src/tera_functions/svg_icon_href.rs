@@ -1,9 +1,21 @@
+//! Provides the `svg_icon_href` Tera function.
+
 use std::collections::HashMap;
 
 use tera::{to_value, Error, Result, Value};
 
 use crate::builder::svg_icons::svg_icon_id;
 
+/// SVG icon href filter for use in Tera templates. Converts an icon reference (name and style) to
+/// the href of the corresponding SVG symbol.
+///
+/// # Example
+///
+/// ```html
+/// <svg>
+///     <use href="{{ svg_icon_href(icon = page.icon, style = page.icon_style) }}" />
+/// </svg>
+/// ```
 pub struct SvgIconHref;
 
 impl tera::Function for SvgIconHref {

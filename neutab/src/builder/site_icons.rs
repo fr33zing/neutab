@@ -1,3 +1,9 @@
+//! Manages fetching and building site icons. Also provides some utility functions relevant to site
+//! icons.
+//!
+//! Typically 'site icon' refers to a website's favicon, but in some cases a different icon may be
+//! found.
+
 use base64ct::Encoding;
 use image::{imageops::FilterType, DynamicImage, ImageFormat, ImageOutputFormat};
 use itertools::Itertools;
@@ -9,28 +15,64 @@ use std::{fmt, io::Cursor};
 
 use crate::{config::Config, util};
 
+/// Errors that may occur when fetching or building site icons.
 #[derive(Error, Debug)]
 pub enum SiteIconError {
+    /// Occurs when writing the build output fails.
+    #[error(transparent)]
+    Output(#[from] fmt::Error),
+
+    /// Occurs when building the [`reqwest::Client`] fails.
+    #[error(transparent)]
+    HttpClient(#[from] reqwest::Error),
+
+    /// Occurs when loading a website fails.
     #[error("failed to load url: {0}")]
     UrlLoad(String),
 
+    /// Occurs when no suitable icon could be found in a loaded website.
     #[error("failed to find icon for url: {0}")]
     IconNotFound(String),
 
+    /// Occurs when downloading a site icon fails.
     #[error("failed to download icon for url: {1} ({0})")]
     IconRequest(#[source] reqwest::Error, String),
 
+    /// Occurs when decoding a downloaded site icon fails.
     #[error("failed to decode icon for url: {1} ({0})")]
     IconDecode(#[source] image::ImageError, String),
 
+    /// Occurs when re-encoding a processed site icon fails.
     #[error("failed to encode icon for url: {1} ({0})")]
     IconEncode(#[source] image::ImageError, String),
 }
 
+/// Generates a unique CSS class for a site icon, based on the provided website URL.
 pub fn site_icon_class(url: &str) -> String {
     format!("ico-{}", util::sha1_base32(url.as_bytes()))
 }
 
+/// Builds site icons for each URL in the config with the following process:
+///
+/// 1. Locate, download, and decode a suitable icon in the webpage.
+/// 2. Resize and invert (if needed) the decoded icon.
+/// 3. Convert the processed icon into a [data URL][1] within a CSS class.
+///
+/// # Arguments
+///
+/// * `config` - The config to extract website URLs from.
+/// * `size` - The size to resize icons to.
+///
+/// # Errors
+///
+/// Returns an error if any step in the process above fails.
+///
+/// # Returns
+///
+/// CSS containing classes with [data URL][1] background images. The classname is derived from the
+/// original website URL in the config.
+///
+/// [1]: <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs>
 pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, SiteIconError> {
     let _span = span!(Level::INFO, "site_icons").entered();
     info!("building site icons");
@@ -46,8 +88,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
         .collect::<Vec<&str>>();
     let http_client = reqwest::Client::builder()
         .user_agent("neutab (looking for icons) github.com/fr33zing/neutab")
-        .build()
-        .expect("failed to build http client");
+        .build()?;
 
     for url in urls.iter().unique().cloned() {
         debug!(url, "locating site icon");
@@ -134,8 +175,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
         fmt::Write::write_fmt(
             &mut site_icons,
             format_args!(".{class}{{background-image:url(data:image/png;base64,{data_base64})}}"),
-        )
-        .unwrap_or_else(|_| unreachable!());
+        )?;
     }
 
     debug!(

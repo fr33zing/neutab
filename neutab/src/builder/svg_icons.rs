@@ -1,4 +1,11 @@
-use std::fmt::Write;
+//! Manages cloning the material design icon repository and building reusable SVG symbol defs. Also
+//! provides some utility functions relevant to site icons.
+//!
+//! Icons repository: <https://github.com/marella/material-design-icons>
+
+#![allow(clippy::missing_docs_in_private_items)]
+
+use std::fmt::{self, Write};
 use std::path::PathBuf;
 use std::{
     fs,
@@ -14,24 +21,35 @@ use tracing::{debug, info, span, Level};
 
 use crate::{config::Config, util};
 
+/// Errors that may occur when cloning the icon or building svg icons.
 #[derive(Error, Debug)]
 pub enum SvgIconError {
+    /// Occurs when writing the build output fails.
+    #[error(transparent)]
+    Output(#[from] fmt::Error),
+
+    /// Occurs when no suitable place to clone the icon repo can be found.
     #[error("failed to locate cache dir")]
     CacheDir,
 
+    /// Occurs when creating the icon repo directory fails.
     #[error(transparent)]
     MakeDir(#[from] io::Error),
 
+    /// Occurs when [`git2`] encounters an error.
     #[error(transparent)]
     Repo(#[from] git2::Error),
 
+    /// Occurs when loading an icon SVG from the icon repo fails.
     #[error("failed to load icon: '{1}' of style '{2}' @ '{3}' ({0})")]
     IconLoad(#[source] io::Error, String, String, PathBuf),
 
-    #[error("failed to find icon for url: {0}")]
-    IconNotFound(String),
+    /// Occurs when a requested icon could not be found in the icon repo.
+    #[error("failed to find icon: '{0}' of style '{1}' @ '{2}'")]
+    IconNotFound(String, String, PathBuf),
 }
 
+/// Generates a unique ID for an icon, based on the icon name and style.
 pub fn svg_icon_id(icon_name: &str, icon_style: &str) -> String {
     format!(
         "svg-{}",
@@ -39,27 +57,37 @@ pub fn svg_icon_id(icon_name: &str, icon_style: &str) -> String {
     )
 }
 
+/// Clones or updates the icons repo and converts requested icons SVGs into SVG symbol definitions.
+///
+/// # Arguments
+///
+/// * `config` - The config to extract icon references from.
+///
+/// # Errors
+///
+/// Returns an error if cloning the icon repo or processing the icons fails.
+///
+/// # Returns
+///
+/// An HTML SVG containing symbol definitions. The IDs of the symbols are derived from their icon
+/// name and style.
 pub fn build_svg_icons(config: &Config) -> Result<String, SvgIconError> {
     let _span = span!(Level::INFO, "svg_icons").entered();
     info!("building svg icons");
     let sw = Instant::now();
 
-    let repo = icons_repo()?;
+    let repo_root = icons_repo()?;
     let mut symbol_defs = String::default();
     config
         .pages
         .iter()
         .map(|page| (page.icon.clone(), page.icon_style.clone()))
         .unique()
-        .map(|t| {
-            let repo_dir = &repo.path().parent().expect("failed to file repo root dir");
-            load_icon(repo_dir, &t.0, &t.1).map(|src| (src, t.0, t.1))
-        })
+        .map(|t| load_icon(&repo_root, &t.0, &t.1).map(|src| (src, t.0, t.1)))
         .collect::<Result<Vec<(String, String, String)>, SvgIconError>>()?
         .iter()
         .map(|t| to_symbol_def(&t.0, &t.1, &t.2))
-        .try_for_each(|sym_def| symbol_defs.write_str(&sym_def))
-        .expect("failed to write string");
+        .try_for_each(|sym_def| symbol_defs.write_str(&sym_def))?;
 
     debug!(
         elapsed_ms = sw.elapsed().as_millis(),
@@ -70,7 +98,8 @@ pub fn build_svg_icons(config: &Config) -> Result<String, SvgIconError> {
     ))
 }
 
-fn icons_repo() -> Result<Repository, SvgIconError> {
+/// Clones or updates the icons repository and returns its root directory.
+fn icons_repo() -> Result<PathBuf, SvgIconError> {
     let _span = span!(Level::DEBUG, "repo").entered();
 
     let cache_dir = dirs::cache_dir()
@@ -80,8 +109,7 @@ fn icons_repo() -> Result<Repository, SvgIconError> {
     let repo_url = "https://github.com/marella/material-design-icons.git";
 
     fs::create_dir_all(repo_dir.clone())?;
-
-    let repo = match Repository::open(repo_dir.clone()) {
+    match Repository::open(repo_dir.clone()) {
         Ok(repo) => {
             debug!(
                 repo_url,
@@ -89,7 +117,6 @@ fn icons_repo() -> Result<Repository, SvgIconError> {
                 "pulling svg icons repo"
             );
             pull(&repo)?;
-            repo
         }
         Err(_) => {
             debug!(
@@ -97,20 +124,44 @@ fn icons_repo() -> Result<Repository, SvgIconError> {
                 repo_dir = repo_dir.to_str(),
                 "cloning svg icons repo"
             );
-            Repository::clone(repo_url, repo_dir)?
+            Repository::clone(repo_url, repo_dir.clone())?;
         }
-    };
-    Ok(repo)
+    }
+
+    Ok(repo_dir)
 }
 
-fn load_icon(repo_dir: &Path, icon: &str, style: &str) -> Result<String, SvgIconError> {
+/// Locates and loads an icon SVG based on the provided icon name and style.
+///
+/// # Errors
+///
+/// Returns an error if the icon SVG file wasn't found or couldn't be read.
+///
+/// # Returns
+///
+/// SVG element markup.
+fn load_icon(repo_dir: &Path, name: &str, style: &str) -> Result<String, SvgIconError> {
     let svgs_path = repo_dir.join("svg");
     let style_path = svgs_path.join(style);
-    let icon_path = style_path.join(format!("{icon}.svg"));
-    fs::read_to_string(icon_path.clone())
-        .map_err(|e| SvgIconError::IconLoad(e, icon.into(), style.into(), icon_path))
+    let icon_path = style_path.join(format!("{name}.svg"));
+
+    if icon_path.exists() {
+        fs::read_to_string(icon_path.clone())
+            .map_err(|e| SvgIconError::IconLoad(e, name.into(), style.into(), icon_path))
+    } else {
+        Err(SvgIconError::IconNotFound(
+            name.into(),
+            style.into(),
+            icon_path,
+        ))
+    }
 }
 
+/// Converts an SVG into an SVG symbol definition.
+///
+/// # Returns
+///
+/// SVG symbol element markup.
 fn to_symbol_def(src: &str, name: &str, style: &str) -> String {
     let id = svg_icon_id(name, style);
     let remove_start = r#"<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24""#;

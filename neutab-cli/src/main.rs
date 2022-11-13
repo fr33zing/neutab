@@ -1,3 +1,9 @@
+//! Command line interface for neutab.
+//! Create static new tab pages from a config file.
+
+#![warn(missing_docs)]
+#![warn(clippy::missing_docs_in_private_items)]
+
 mod args;
 
 use args::Args;
@@ -19,14 +25,12 @@ use std::{
 async fn main() {
     let args = Args::parse();
 
-    // Setup resources
     let resources = Resources {
         config: args.config.clone(),
-        css: args.scss.clone(),
+        scss: args.scss.clone(),
         html: args.html.clone(),
     };
 
-    // Setup output
     let result = match args.output.clone().to_str() {
         Some("-") | None => build_to_stdout(args, resources).await,
         Some(file) => build_to_file(args, resources, file).await,
@@ -38,6 +42,7 @@ async fn main() {
     }
 }
 
+/// Builds to stdout and logs to stderr.
 async fn build_to_stdout(args: Args, resources: Resources) -> Result<(), BuildError> {
     let subscriber = FmtSubscriber::builder()
         .with_writer(io::stderr)
@@ -46,9 +51,10 @@ async fn build_to_stdout(args: Args, resources: Resources) -> Result<(), BuildEr
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     let mut output = io::stdout().lock();
-    builder::build(resources, false, &mut output).await
+    builder::build(resources, &mut output).await
 }
 
+/// Builds to the provided file path.
 async fn build_to_file(args: Args, resources: Resources, file: &str) -> Result<(), BuildError> {
     let event_format = tracing_subscriber::fmt::format().without_time().pretty();
     let subscriber = FmtSubscriber::builder()
@@ -58,7 +64,7 @@ async fn build_to_file(args: Args, resources: Resources, file: &str) -> Result<(
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     let mut output = File::create(file).expect("failed to create output file");
-    builder::build(resources, false, &mut output).await?;
+    builder::build(resources, &mut output).await?;
 
     if args.open {
         let canon = fs::canonicalize(file).expect("failed to canonicalize file");

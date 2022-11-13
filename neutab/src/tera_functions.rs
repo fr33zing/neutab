@@ -1,3 +1,5 @@
+//! Helpful functions for use with tera.
+
 mod len;
 pub use len::Len;
 
