@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use tera::{to_value, Filter};
 
-use crate::util;
+use crate::builder;
 
 pub struct SiteIcon;
 
@@ -14,7 +14,7 @@ impl Filter for SiteIcon {
     ) -> tera::Result<tera::Value> {
         match value.as_str() {
             Some(url) => {
-                let output = util::site_icon_class(url).map_err(|_| {
+                let output = builder::site_icons::site_icon_class(url).map_err(|_| {
                     tera::Error::msg(format!("failed to get site icon class for url: '{url}'"))
                 })?;
                 to_value(output).map_err(|_| {
