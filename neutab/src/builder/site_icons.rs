@@ -1,20 +1,38 @@
 use base64ct::Encoding;
 use image::{imageops::FilterType, DynamicImage, ImageFormat, ImageOutputFormat};
 use itertools::Itertools;
+use thiserror::Error;
 use tokio::time::Instant;
 use tracing::{debug, info, span, Level};
 
 use std::io::Cursor;
 
-use super::BuildError;
 use crate::{config::Config, util};
+
+#[derive(Error, Debug)]
+pub enum SiteIconError {
+    #[error("failed to load url: {0}")]
+    UrlLoad(String),
+
+    #[error("failed to find icon for url: {0}")]
+    IconNotFound(String),
+
+    #[error("failed to download icon for url: {1} ({0})")]
+    IconRequest(#[source] reqwest::Error, String),
+
+    #[error("failed to decode icon for url: {1} ({0})")]
+    IconDecode(#[source] image::ImageError, String),
+
+    #[error("failed to encode icon for url: {1} ({0})")]
+    IconEncode(#[source] image::ImageError, String),
+}
 
 pub fn site_icon_class(url: &str) -> Result<String, base16ct::Error> {
     let url_hash = util::sha1_base32(url.as_bytes())?;
     Ok(format!("ico-{url_hash}"))
 }
 
-pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, BuildError> {
+pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, SiteIconError> {
     let _span = span!(Level::INFO, "site_icons").entered();
     info!("building site icons");
     let sw = Instant::now();
@@ -39,7 +57,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Buil
         icons
             .load_website(url)
             .await
-            .map_err(|_| BuildError::UrlLoad(url.into()))?;
+            .map_err(|_| SiteIconError::UrlLoad(url.into()))?;
 
         debug!("choosing site icon");
 
@@ -54,7 +72,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Buil
                 None => entries
                     .iter()
                     .find(|i| !matches!(i.info, site_icons::IconInfo::SVG))
-                    .ok_or_else(|| BuildError::IconNotFound(url.into()))?,
+                    .ok_or_else(|| SiteIconError::IconNotFound(url.into()))?,
             }
         };
         let icon_url = icon.url.to_string();
@@ -66,10 +84,10 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Buil
             .get(icon.url.to_string())
             .send()
             .await
-            .map_err(|e| BuildError::IconRequest(e, icon.url.clone().into()))?
+            .map_err(|e| SiteIconError::IconRequest(e, icon.url.clone().into()))?
             .bytes()
             .await
-            .map_err(|e| BuildError::IconRequest(e, icon.url.clone().into()))?;
+            .map_err(|e| SiteIconError::IconRequest(e, icon.url.clone().into()))?;
 
         debug!(len = icon_bytes.len(), "reading downloaded site icon");
 
@@ -87,7 +105,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Buil
 
         let mut img = reader
             .decode()
-            .map_err(|e| BuildError::IconDecode(e, url.into()))?
+            .map_err(|e| SiteIconError::IconDecode(e, url.into()))?
             .resize(size, size, FilterType::Lanczos3);
 
         if config.theme.invert_low_contrast_icons {
@@ -103,7 +121,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Buil
 
         let mut writer = Cursor::new(Vec::<u8>::new());
         img.write_to(&mut writer, ImageOutputFormat::Png)
-            .map_err(|e| BuildError::IconDecode(e, url.into()))?;
+            .map_err(|e| SiteIconError::IconDecode(e, url.into()))?;
         let buf = writer.into_inner();
         let bytes = buf.as_slice();
 

@@ -1,4 +1,5 @@
 pub(crate) mod site_icons;
+pub(crate) mod svg_icons;
 
 use serde::Serialize;
 use std::{
@@ -16,34 +17,24 @@ use crate::{
     tera_filters, tera_functions,
 };
 
+use self::site_icons::SiteIconError;
+
 #[derive(Error, Debug)]
 pub enum BuildError {
     #[error("failed to load resource ({0})")]
     Resource(#[from] ResourceError),
 
-    #[error("failed to render template")]
+    #[error("failed to render template ({0})")]
     Template(#[from] tera::Error),
 
-    #[error("failed to compile scss: {0}")]
+    #[error("failed to compile scss ({0})")]
     ScssCompile(#[from] rsass::Error),
 
-    #[error("failed to encode to UTF-8: {0}")]
+    #[error("failed to encode to UTF-8 ({0})")]
     EncodeUtf8(#[from] Utf8Error),
 
-    #[error("failed to load url: {0}")]
-    UrlLoad(String),
-
-    #[error("failed to find icon for url: {0}")]
-    IconNotFound(String),
-
-    #[error("failed to download icon for url: {1} ({0})")]
-    IconRequest(#[source] reqwest::Error, String),
-
-    #[error("failed to decode icon for url: {1} ({0})")]
-    IconDecode(#[source] image::ImageError, String),
-
-    #[error("failed to encode icon for url: {1} ({0})")]
-    IconEncode(#[source] image::ImageError, String),
+    #[error("failed to build site icons ({0})")]
+    SiteIcon(#[from] SiteIconError),
 }
 
 #[derive(Serialize)]
@@ -60,9 +51,9 @@ pub async fn build(
     let _span = span!(Level::INFO, "build").entered();
 
     // Load and preprocess resources
-    let config = resources.config().map_err(BuildError::Resource)?;
-    let src_html = resources.html().map_err(BuildError::Resource)?;
-    let src_scss = resources.scss().map_err(BuildError::Resource)?;
+    let config = resources.config()?;
+    let src_html = resources.html()?;
+    let src_scss = resources.scss()?;
 
     // Setup tera
     let mut tera = Tera::default();
