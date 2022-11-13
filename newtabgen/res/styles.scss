@@ -226,7 +226,8 @@ section {
     flex: 1;
     display: inline-flex;
     flex-flow: column nowrap;
-    max-height: min-content;
+    height: min-content;
+    max-height: 100%;
     max-width: 40rem;
 
     + section {
