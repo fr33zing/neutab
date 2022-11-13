@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{{ config.title }}</title>
 
+        {{ include_svg_icons }}
         {{ include_site_icons }}
         {{ include_styles }}
     </head>
@@ -22,7 +23,9 @@
             <label for="page-{{ page.name | hash }}" >
                 <div class="tab">
                     <div class="card">
-                        <div></div>
+                        <svg>
+                            <use href="{{ svg_icon_href(icon = page.icon, style = page.icon_style) }}" />
+                        </svg>
                         <span>{{ page.name }}</span>
                         <span>
                             {{ page.sections | length }} sections,

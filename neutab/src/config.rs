@@ -101,8 +101,24 @@ impl Default for Build {
 pub struct Page {
     pub name: String,
 
+    #[serde(default = "Page::default_icon")]
+    pub icon: String,
+
+    #[serde(default = "Page::default_icon_style")]
+    pub icon_style: String,
+
     #[serde(default)]
     pub sections: Vec<Section>,
+}
+
+impl Page {
+    fn default_icon() -> String {
+        "image_not_supported".into()
+    }
+
+    fn default_icon_style() -> String {
+        "outlined".into()
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -68,7 +68,7 @@ $animation_duration: 350ms;
     column-gap: $card_padding * 0.6;
     padding: $card_padding ($card_padding * 0.75);
 
-    div {
+    > :first-child {
         grid-area: img;
         display: inline-block;
         height: $height;
@@ -170,9 +170,10 @@ label {
         top: 50%;
         transform: translateY(-50%);
 
-        div {
-            background: dim($fg, -50%);
-            border-radius: 20%;
+        svg {
+            transform: scale(0.9);
+            fill: $fg;
+            transition: fill $transition_duration ease;
         }
     }
 }
@@ -201,10 +202,8 @@ input[type="radio"] {
             background: $fg;
             color: $bg;
 
-            .card {
-                div {
-                    opacity: 0.2;
-                }
+            svg {
+                fill: $bg;
             }
         }
 

@@ -28,6 +28,8 @@ fn gen_pages(rng: &mut ThreadRng) -> Vec<Page> {
         vec.push(Page {
             name: lipsum_words(rng.gen_range(1..10)),
             sections: gen_sections(rng),
+            icon: "image_not_supported".into(),
+            icon_style: "outlined".into(),
         });
     }
     vec

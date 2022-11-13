@@ -17,7 +17,7 @@ use crate::{
     tera_filters, tera_functions,
 };
 
-use self::site_icons::SiteIconError;
+use self::{site_icons::SiteIconError, svg_icons::SvgIconError};
 
 #[derive(Error, Debug)]
 pub enum BuildError {
@@ -35,6 +35,9 @@ pub enum BuildError {
 
     #[error("failed to build site icons ({0})")]
     SiteIcon(#[from] SiteIconError),
+
+    #[error("failed to build svg icons ({0})")]
+    SvgIcon(#[from] SvgIconError),
 }
 
 #[derive(Serialize)]
@@ -60,6 +63,7 @@ pub async fn build(
     tera.register_filter("hash", tera_filters::Hash);
     tera.register_filter("site_icon", tera_filters::SiteIcon);
     tera.register_function("len", tera_functions::Len);
+    tera.register_function("svg_icon_href", tera_functions::SvgIconHref);
     tera.register_function(
         "count_links_in_page",
         tera_functions::CountLinksInPage(config.clone()),
@@ -68,6 +72,10 @@ pub async fn build(
     let mut context = Context::new();
     context.insert("config", &config);
     context.insert("mobile", &mobile);
+
+    // Build svg icon svg symbol defs
+    let out_svg_icons = svg_icons::build_svg_icons(&config)?;
+    context.insert("include_svg_icons", &out_svg_icons);
 
     // Build site icon css styles
     let out_site_icons = site_icons::build_site_icons(&config, 24).await?;

@@ -1,6 +1,6 @@
 [package]
 name = "neutab"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["fr33zing"]
 description = "Library for neutab-cli, create new tab pages from a config file"
@@ -16,6 +16,8 @@ base16ct = { version = "0.1.1", features = ["alloc"] }
 base32ct = { version = "0.1.0", features = ["alloc"] }
 base64ct = { version = "1.5.3", features = ["alloc"] }
 data-encoding = "2.3.2"
+dirs = "4.0.0"
+git2 = "0.15.0"
 hex = "0.4.3"
 image = "0.24.4"
 itertools = "0.10.5"
