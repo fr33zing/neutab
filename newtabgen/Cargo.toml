@@ -1,6 +1,6 @@
 [package]
 name = "newtabgen"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2021"
 authors = ["fr33zing"]
 description = "Library for newtabgen-cli, create new tab pages from a config file"
@@ -12,7 +12,6 @@ crate-type = ["rlib"]
 bench = false
 
 [dependencies]
-base16ct = { version = "0.1.1", features = ["alloc"] }
 base32ct = { version = "0.1.0", features = ["alloc"] }
 base64ct = { version = "1.5.3", features = ["alloc"] }
 data-encoding = "2.3.2"
