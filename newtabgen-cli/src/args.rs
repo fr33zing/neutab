@@ -23,7 +23,7 @@ pub(crate) struct Args {
     /// Output file
     ///
     /// Use -o- to output to stdout and log to stderr.
-    #[arg(short, long, value_name = "FILE", default_value = "neutab.html")]
+    #[arg(short, long, value_name = "FILE", default_value = "newtabgen.html")]
     pub output: PathBuf,
 
     /// Preview output in default browser

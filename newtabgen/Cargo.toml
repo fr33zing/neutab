@@ -1,11 +1,11 @@
 [package]
-name = "neutab"
-version = "0.3.1"
+name = "newtabgen"
+version = "0.4.0"
 edition = "2021"
 authors = ["fr33zing"]
-description = "Library for neutab-cli, create new tab pages from a config file"
+description = "Library for newtabgen-cli, create new tab pages from a config file"
 license = "GPL-3.0-or-later"
-repository = "https://github.com/fr33zing/neutab"
+repository = "https://github.com/fr33zing/newtabgen"
 
 [lib]
 crate-type = ["rlib"]

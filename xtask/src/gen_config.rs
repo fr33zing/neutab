@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 
-use neutab::config::{Config, Link, Page, Section};
+use newtabgen::config::{Config, Link, Page, Section};
 
 use lipsum::lipsum_words;
 use rand::prelude::*;

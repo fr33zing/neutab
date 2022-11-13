@@ -2,7 +2,7 @@
 **/target
 
 # Program output
-neutab.html
+newtabgen.html
 
 # Output of `cargo xtask gen-config`
 generated.json

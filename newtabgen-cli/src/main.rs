@@ -1,4 +1,4 @@
-//! Command line interface for neutab.
+//! Command line interface for newtabgen.
 //! Create static new tab pages from a config file.
 
 #![warn(missing_docs)]
@@ -7,7 +7,7 @@
 mod args;
 
 use args::Args;
-use neutab::{
+use newtabgen::{
     builder::{self, BuildError},
     resources::Resources,
 };

@@ -104,7 +104,7 @@ fn icons_repo() -> Result<PathBuf, SvgIconError> {
 
     let cache_dir = dirs::cache_dir()
         .ok_or(SvgIconError::CacheDir)?
-        .join("neutab");
+        .join("newtabgen");
     let repo_dir = cache_dir.join("material-design-icons");
     let repo_url = "https://github.com/marella/material-design-icons.git";
 

@@ -1,4 +1,4 @@
-//! Library for neutab-cli.
+//! Library for newtabgen-cli.
 //! Create static new tab pages from a config file.
 
 #![warn(missing_docs)]

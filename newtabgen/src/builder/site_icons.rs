@@ -87,7 +87,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
         .map(|l| l.url.as_str())
         .collect::<Vec<&str>>();
     let http_client = reqwest::Client::builder()
-        .user_agent("neutab (looking for icons) github.com/fr33zing/neutab")
+        .user_agent("newtabgen (looking for icons) github.com/fr33zing/newtabgen")
         .build()?;
 
     for url in urls.iter().unique().cloned() {

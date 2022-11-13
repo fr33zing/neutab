@@ -1,3 +1,3 @@
 [workspace]
-members = ["neutab", "neutab-cli", "xtask"]
-default-members = ["neutab-cli"]
+members = ["newtabgen", "newtabgen-cli", "xtask"]
+default-members = ["newtabgen-cli"]
