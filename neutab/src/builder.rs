@@ -71,11 +71,11 @@ pub async fn build(
 
     // Build site icon css styles
     let out_site_icons = site_icons::build_site_icons(&config, 24).await?;
-    context.insert("site_icons", &out_site_icons);
+    context.insert("include_site_icons", &out_site_icons);
 
     // Build css
     let out_css = build_css(src_scss, &mut tera, &context)?;
-    context.insert("styles", &out_css);
+    context.insert("include_styles", &out_css);
 
     // Build html
     let out_html = build_html(src_html, &mut tera, &context)?;
@@ -107,7 +107,7 @@ fn build_css(src_scss: String, tera: &mut Tera, ctx: &Context) -> Result<String,
         elapsed_ms = sw.elapsed().as_millis(),
         "finished building css"
     );
-    Ok(encoded.to_string())
+    Ok(format!("<style>{encoded}</style>"))
 }
 
 fn build_html(src_html: String, tera: &mut Tera, ctx: &Context) -> Result<Vec<u8>, BuildError> {

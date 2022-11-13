@@ -5,7 +5,7 @@ use thiserror::Error;
 use tokio::time::Instant;
 use tracing::{debug, info, span, Level};
 
-use std::io::Cursor;
+use std::{fmt, io::Cursor};
 
 use crate::{config::Config, util};
 
@@ -36,7 +36,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
     info!("building site icons");
     let sw = Instant::now();
 
-    let mut output = String::default();
+    let mut site_icons = String::default();
     let urls = config
         .pages
         .iter()
@@ -131,8 +131,8 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
 
         debug!("writing output");
 
-        std::fmt::Write::write_fmt(
-            &mut output,
+        fmt::Write::write_fmt(
+            &mut site_icons,
             format_args!(".{class}{{background-image:url(data:image/png;base64,{data_base64})}}"),
         )
         .unwrap_or_else(|_| unreachable!());
@@ -142,7 +142,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
         elapsed_ms = sw.elapsed().as_millis(),
         "finished building site icons"
     );
-    Ok(output)
+    Ok(format!("<style>{site_icons}</style>"))
 }
 
 /// Calculates the average brightness of visible pixels in an image.
