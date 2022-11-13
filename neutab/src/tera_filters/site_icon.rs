@@ -14,9 +14,7 @@ impl Filter for SiteIcon {
     ) -> tera::Result<tera::Value> {
         match value.as_str() {
             Some(url) => {
-                let output = builder::site_icons::site_icon_class(url).map_err(|_| {
-                    tera::Error::msg(format!("failed to get site icon class for url: '{url}'"))
-                })?;
+                let output = builder::site_icons::site_icon_class(url);
                 to_value(output).map_err(|_| {
                     tera::Error::msg(
                         "formatting site icon class produced invalid value: '{output}'",

@@ -27,9 +27,8 @@ pub enum SiteIconError {
     IconEncode(#[source] image::ImageError, String),
 }
 
-pub fn site_icon_class(url: &str) -> Result<String, base16ct::Error> {
-    let url_hash = util::sha1_base32(url.as_bytes())?;
-    Ok(format!("ico-{url_hash}"))
+pub fn site_icon_class(url: &str) -> String {
+    format!("ico-{}", util::sha1_base32(url.as_bytes()))
 }
 
 pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, SiteIconError> {
@@ -128,8 +127,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
         debug!("generating data url & css class");
 
         let data_base64 = base64ct::Base64::encode_string(bytes);
-        let class = site_icon_class(url)
-            .unwrap_or_else(|_| panic!("failed to get site icon class for url: '{url}'"));
+        let class = site_icon_class(url);
 
         debug!("writing output");
 

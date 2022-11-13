@@ -13,13 +13,9 @@ impl Filter for Hash {
         _args: &HashMap<String, tera::Value>,
     ) -> tera::Result<tera::Value> {
         match value.as_str() {
-            Some(v) => {
-                let output = util::sha1_base32(v.as_bytes())
-                    .map_err(|_| tera::Error::msg(format!("failed to hash string: '{v}'")))?;
-                to_value(output).map_err(|_| {
-                    tera::Error::msg("base16 encoding produced invalid value: '{output}'")
-                })
-            }
+            Some(v) => to_value(util::sha1_base32(v.as_bytes())).map_err(|_| {
+                tera::Error::msg("base32 encoding produced invalid value: '{output}'")
+            }),
             None => Err(tera::Error::msg("tried to hash non-string")),
         }
     }
