@@ -162,15 +162,22 @@ label {
     }
 
     .card {
-        @include card(2rem);
+        @include card(2.2rem);
         position: relative;
         top: 50%;
         transform: translateY(-50%);
 
-        svg {
-            transform: scale(0.9);
-            fill: $fg;
-            transition: fill $transition_duration ease;
+        div {
+            background: rgba($bg, 0.35);
+            border-radius: 50%;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                transform: scale(0.6);
+                fill: $fg;
+                transition: fill $transition_duration ease;
+            }
         }
     }
 }
@@ -219,7 +226,7 @@ section {
     flex: 1;
     display: inline-flex;
     flex-flow: column nowrap;
-    height: 100%;
+    height: min-content;
     max-width: 40rem;
 
     + section {
@@ -250,7 +257,7 @@ h1 {
 //
 
 a {
-    @include card(2rem);
+    @include card(2.2rem);
 
     background: $bg_dimmer;
     border-radius: $link_border_radius;
@@ -280,7 +287,7 @@ a {
     // Icon
     div {
         background: rgba($bg, 0.35);
-        background-size: 65%;
+        background-size: 60%;
         background-position: center;
         background-repeat: no-repeat;
         border-radius: 0.55em;

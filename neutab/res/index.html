@@ -23,9 +23,11 @@
             <label for="page-{{ page.name | hash }}" >
                 <div class="tab">
                     <div class="card">
-                        <svg>
-                            <use href="{{ svg_icon_href(icon = page.icon, style = page.icon_style) }}" />
-                        </svg>
+                        <div>
+                            <svg>
+                                <use href="{{ svg_icon_href(icon = page.icon, style = page.icon_style) }}" />
+                            </svg>
+                        </div>
                         <span>{{ page.name }}</span>
                         <span>
                             {{ page.sections | length }} sections,
