@@ -1708,7 +1708,7 @@ dependencies = [
 
 [[package]]
 name = "neutab-cli"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "clap 4.0.23",
  "neutab",
