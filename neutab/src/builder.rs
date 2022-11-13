@@ -55,8 +55,8 @@ pub enum BuildError {
 ///
 /// # Arguments
 ///
-/// * `resources` - External [Resources] used to build the new tab page.
-/// * `output` - Where to write the build output. Generally, stdout or a file.
+/// * `resources` - External [resources][Resources] used to build the new tab page.
+/// * `output` - Where to write the build output. Generally stdout or a file.
 ///
 /// # Errors
 ///
@@ -64,7 +64,7 @@ pub enum BuildError {
 ///
 /// # Example
 ///
-/// Assuming resource paths are read from command line arguments:
+/// Assuming [resource][Resources] paths are read from command line arguments:
 ///
 /// ```rust
 /// let resources = Resources {
@@ -74,7 +74,7 @@ pub enum BuildError {
 /// };
 ///
 /// let mut output = io::stdout().lock();
-/// builder::build(resources, false, &mut output).await?;
+/// builder::build(resources, &mut output).await?;
 /// ```
 pub async fn build(resources: Resources, output: &mut impl Write) -> Result<(), BuildError> {
     let _span = span!(Level::INFO, "build").entered();
