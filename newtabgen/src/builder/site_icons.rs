@@ -4,7 +4,6 @@
 //! Typically 'site icon' refers to a website's favicon, but in some cases a different icon may be
 //! found.
 
-use base64ct::Encoding;
 use image::{imageops::FilterType, DynamicImage, ImageFormat, ImageOutputFormat};
 use itertools::Itertools;
 use thiserror::Error;
@@ -167,7 +166,7 @@ pub async fn build_site_icons(config: &Config, size: u32) -> Result<String, Site
 
         debug!("generating data url & css class");
 
-        let data_base64 = base64ct::Base64::encode_string(bytes);
+        let data_base64 = data_encoding::BASE64.encode(bytes);
         let class = site_icon_class(url);
 
         debug!("writing output");
