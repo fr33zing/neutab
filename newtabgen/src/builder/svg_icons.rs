@@ -102,9 +102,7 @@ pub fn build_svg_icons(config: &Config) -> Result<String, SvgIconError> {
 fn icons_repo() -> Result<PathBuf, SvgIconError> {
     let _span = span!(Level::DEBUG, "repo").entered();
 
-    let cache_dir = dirs::cache_dir()
-        .ok_or(SvgIconError::CacheDir)?
-        .join("newtabgen");
+    let cache_dir = util::cache_dir().map_err(|_| SvgIconError::CacheDir)?;
     let repo_dir = cache_dir.join("material-design-icons");
     let repo_url = "https://github.com/marella/material-design-icons.git";
 
