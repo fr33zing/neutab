@@ -1,6 +1,6 @@
 [package]
 name = "newtabgen-cli"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 authors = ["fr33zing"]
 description = "CLI for newtabgen, create new tab pages from a config file"

@@ -23,6 +23,27 @@ pub fn cache_dir() -> Result<PathBuf, io::Error> {
     Ok(cache_dir)
 }
 
+/// Finds a suitable cache directory. The directory will be created if needed. Also creates the
+/// request subdirectory if needed.
+///
+/// # Errors
+///
+/// Returns an error if a suitable cache directory cannot be found.
+pub fn cache_subdir(subdir: &str) -> Result<PathBuf, io::Error> {
+    let cache_dir = match dirs::cache_dir() {
+        Some(d) => Ok(d),
+        None => env::current_dir(),
+    }?
+    .join("newtabgen")
+    .join(subdir);
+
+    if !cache_dir.exists() {
+        fs::create_dir_all(&cache_dir)?;
+    }
+
+    Ok(cache_dir)
+}
+
 /// Returns a base32-encoded SHA1 hash of the provided bytes.
 pub fn sha1_base32(bytes: &[u8]) -> String {
     let mut hasher = Sha1::new();
