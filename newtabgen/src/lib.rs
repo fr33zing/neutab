@@ -9,7 +9,10 @@
 mod tera_filters;
 mod tera_functions;
 
-pub mod builder;
 pub mod config;
 pub mod resources;
 pub mod util;
+
+mod builder;
+pub use builder::build;
+pub use builder::BuildError as Error;

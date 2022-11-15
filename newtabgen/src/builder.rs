@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-//! Manages the full build process.
+//! Provides the `build` function.
 
 pub(crate) mod site_icons;
 pub(crate) mod svg_icons;
@@ -53,31 +53,31 @@ pub enum BuildError {
     SvgIcon(#[from] SvgIconError),
 }
 
-/// Builds a new tab page.
-///
-/// # Arguments
-///
-/// * `resources` - External [resources][Resources] used to build the new tab page.
-/// * `output` - Where to write the build output. Generally stdout or a file.
-///
-/// # Errors
-///
-/// Returns an error if any step in the build process fails.
-///
-/// # Example
-///
-/// Assuming [resource][Resources] paths are read from command line arguments:
-///
-/// ```rust
-/// let resources = Resources {
-///     config: args.config.clone(),
-///     css: args.scss.clone(),
-///     html: args.html.clone(),
-/// };
-///
-/// let mut output = io::stdout().lock();
-/// builder::build(resources, &mut output).await?;
-/// ```
+/**
+Builds a new tab page.
+
+# Arguments
+
+* `resources` - External [resources][Resources] used to build the new tab page.
+* `output` - Where to write the build output. Generally stdout or a file.
+
+# Errors
+
+Returns an error if any step in the build process fails.
+
+# Example
+
+```rust
+use newtabgen::resources::Resources;
+
+#[tokio::main]
+async fn main() {
+    let resources = Resources::default(); // Use example config and default templates
+    let mut output = std::io::stdout().lock();
+    let res = newtabgen::build(resources, &mut output).await;
+}
+```
+*/
 pub async fn build(resources: Resources, output: &mut impl Write) -> Result<(), BuildError> {
     let _span = span!(Level::INFO, "build").entered();
 

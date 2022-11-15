@@ -9,10 +9,7 @@
 mod args;
 
 use args::Args;
-use newtabgen::{
-    builder::{self, BuildError},
-    resources::Resources,
-};
+use newtabgen::resources::Resources;
 
 use clap::Parser;
 use tracing::error;
@@ -45,7 +42,7 @@ async fn main() {
 }
 
 /// Builds to stdout and logs to stderr.
-async fn build_to_stdout(args: Args, resources: Resources) -> Result<(), BuildError> {
+async fn build_to_stdout(args: Args, resources: Resources) -> Result<(), newtabgen::Error> {
     let subscriber = FmtSubscriber::builder()
         .with_writer(io::stderr)
         .with_max_level(args.log_level.as_tracing_level())
@@ -53,11 +50,15 @@ async fn build_to_stdout(args: Args, resources: Resources) -> Result<(), BuildEr
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     let mut output = io::stdout().lock();
-    builder::build(resources, &mut output).await
+    newtabgen::build(resources, &mut output).await
 }
 
 /// Builds to the provided file path.
-async fn build_to_file(args: Args, resources: Resources, file: &str) -> Result<(), BuildError> {
+async fn build_to_file(
+    args: Args,
+    resources: Resources,
+    file: &str,
+) -> Result<(), newtabgen::Error> {
     let event_format = tracing_subscriber::fmt::format().without_time().pretty();
     let subscriber = FmtSubscriber::builder()
         .with_max_level(args.log_level.as_tracing_level())
@@ -66,7 +67,7 @@ async fn build_to_file(args: Args, resources: Resources, file: &str) -> Result<(
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     let mut output = File::create(file).expect("failed to create output file");
-    builder::build(resources, &mut output).await?;
+    newtabgen::build(resources, &mut output).await?;
 
     if args.open {
         let canon = fs::canonicalize(file).expect("failed to canonicalize file");

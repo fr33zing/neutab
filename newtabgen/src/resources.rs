@@ -26,6 +26,7 @@ pub enum ResourceError {
 }
 
 /// Contains paths to resource files.
+#[derive(Default)]
 pub struct Resources {
     /// Configuration file path.
     pub config: Option<PathBuf>,
