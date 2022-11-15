@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Provides the `svg_icon_href` Tera function.
 
 use std::collections::HashMap;

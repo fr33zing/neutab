@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Provides structs that define the expected configuration file.
 
 use std::collections::HashMap;

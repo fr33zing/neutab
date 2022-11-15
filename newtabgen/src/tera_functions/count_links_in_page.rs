@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Provides the `count_links_in_page` Tera function.
 
 use std::collections::HashMap;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Manages cloning the material design icon repository and building reusable SVG symbol defs. Also
 //! provides some utility functions relevant to site icons.
 //!

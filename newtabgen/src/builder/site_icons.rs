@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Manages fetching and building site icons. Also provides some utility functions relevant to site
 //! icons.
 //!

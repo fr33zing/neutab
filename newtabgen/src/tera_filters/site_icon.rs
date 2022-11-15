@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Provides the `site_icon` Tera filter.
 
 use std::collections::HashMap;

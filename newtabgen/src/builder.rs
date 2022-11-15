@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Manages the full build process.
 
 pub(crate) mod site_icons;

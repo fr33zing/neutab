@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 use std::{fs::File, io::Write};
 
 use newtabgen::config::{Config, Link, Page, Section};

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Helpful filters for use with tera.
 
 mod site_icon;

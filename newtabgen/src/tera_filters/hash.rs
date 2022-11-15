@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Provides the `hash` Tera filter.
 
 use std::collections::HashMap;

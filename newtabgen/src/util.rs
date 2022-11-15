@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Utility functions.
 
 use std::{env, fs, io, path::PathBuf};

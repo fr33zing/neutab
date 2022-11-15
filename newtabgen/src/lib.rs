@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Library for newtabgen-cli.
 //! Create static new tab pages from a config file.
 

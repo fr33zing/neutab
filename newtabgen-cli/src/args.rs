@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Defines command line arguments by providing the `[Args]` struct.
 
 use std::path::PathBuf;

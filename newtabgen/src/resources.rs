@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 //! Handles loading resources needed for building a new tab page.
 
 use resource::{resource, resource_str};
