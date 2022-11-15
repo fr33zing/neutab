@@ -1,6 +1,6 @@
 [package]
 name = "newtabgen-cli"
-version = "0.2.6"
+version = "0.2.8"
 edition = "2021"
 authors = ["fr33zing"]
 description = "CLI for newtabgen, create new tab pages from a config file"
@@ -12,7 +12,7 @@ name = "newtabgen"
 path = "src/main.rs"
 
 [dependencies]
-newtabgen = { path = "../newtabgen", version = "0.6.0" }
+newtabgen = { path = "../newtabgen", version = "0.6.1" }
 clap = { version = "4.0.22", features = ["derive"] }
 webbrowser = "0.8.1"
 tracing = "0.1.37"
